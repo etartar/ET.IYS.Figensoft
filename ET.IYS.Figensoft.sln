@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33209.295
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ET.IYS.Figensoft", "ET.IYS.Figensoft\ET.IYS.Figensoft.csproj", "{1D1C55EF-99D9-47B6-B1F4-D4353D3F9A1E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D1C55EF-99D9-47B6-B1F4-D4353D3F9A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1C55EF-99D9-47B6-B1F4-D4353D3F9A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1C55EF-99D9-47B6-B1F4-D4353D3F9A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1C55EF-99D9-47B6-B1F4-D4353D3F9A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E05EC0D1-B141-4903-B028-B01530AB4F43}
+	EndGlobalSection
+EndGlobal
