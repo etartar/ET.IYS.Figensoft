@@ -37,14 +37,23 @@
         {
         }
 
-        public StartDoubleOptinGSMRequest(string gsmNo, int kvkk, int sms, int audio, int email, string language)
+        public StartDoubleOptinGSMRequest(string gsmNo, bool sms, bool audio, bool email, string language)
         {
             GsmNo = gsmNo;
-            Kvkk = kvkk;
-            Sms = sms;
-            Audio = audio;
-            Email = email;
+            Kvkk = 1;
+            Sms = sms ? 1 : 0;
+            Audio = audio ? 1 : 0;
+            Email = email ? 1 : 0;
             Language = language;
+        }
+
+        public StartDoubleOptinGSMRequest(string gsmNo, bool sms, bool audio, bool email)
+        {
+            GsmNo = gsmNo;
+            Kvkk = 1;
+            Sms = sms ? 1 : 0;
+            Audio = audio ? 1 : 0;
+            Email = email ? 1 : 0;
         }
     }
 }

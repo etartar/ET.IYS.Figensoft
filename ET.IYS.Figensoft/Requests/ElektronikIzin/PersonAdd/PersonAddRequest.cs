@@ -1,5 +1,7 @@
-﻿using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
+﻿using ET.IYS.Figensoft.Requests.Common;
+using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
 using ET.IYS.Figensoft.Requests.ElektronikIzin.Person;
+using ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin;
 
 namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
 {
@@ -52,9 +54,21 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
 
         #region Methods
 
+        public PersonAddRequest SetReason(string reason)
+        {
+            Reason = reason;
+            return this;
+        }
+
         public PersonAddRequest SetMustAddMasterAccount(string mustAddMasterAccount)
         {
             MustAddMasterAccount = mustAddMasterAccount;
+            return this;
+        }
+
+        public PersonAddRequest SetEvidenceData(object evidenceData)
+        {
+            EvidenceData = evidenceData;
             return this;
         }
 
@@ -67,6 +81,41 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
         public PersonAddRequest SetLanguage(string language)
         {
             Language = language;
+            return this;
+        }
+
+        public PersonAddRequest CreatePerson(string personId, string nameSurname, string informationGsm)
+        {
+            Person = new PersonRequest(personId, nameSurname, informationGsm);
+            return this;
+        }
+
+        public PersonAddRequest SetKVKPermission(List<KVKPermissionRequest> kvkPermissions)
+        {
+            kvkPermissions.ForEach(kp =>
+            {
+                Person.KVK.AddKVKPermission(kp.PermissionCode, kp.PermissionType, kp.PermissionText);
+            });
+            return this;
+        }
+
+        public PersonAddRequest SetETKPermission(List<PersonETKPermissionRequest> etkPermissions)
+        {
+            etkPermissions.ForEach(ep =>
+            {
+                ep.Contacts.ForEach(c =>
+                {
+                    Person.ETK.CreateContact(c.PermissionChannel, c.ReceiverType, c.Receiver, c.InformationGsm);
+                });
+
+                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText);
+            });
+            return this;
+        }
+
+        public PersonAddRequest SetExtraIzinIzinData(ExtraIzinIzinDataRequest extraIzinIzinDataRequest)
+        {
+            ExtraIzinIzinData = extraIzinIzinDataRequest;
             return this;
         }
 

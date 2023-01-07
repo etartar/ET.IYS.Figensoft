@@ -4,6 +4,27 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.Person
 {
     public class PersonContactRequest : ContactRequest
     {
+        public PersonContactRequest()
+        {
+        }
+
+        public PersonContactRequest(string permissionChannel, string receiverType, string receiver)
+        {
+            PermissionChannel = permissionChannel;
+            ReceiverType = receiverType;
+            Receiver = receiver;
+            PermissionTime = DateTime.Now.ToString();
+        }
+
+        public PersonContactRequest(string permissionChannel, string receiverType, string receiver, string informationGsm)
+        {
+            InformationGsm = informationGsm;
+            PermissionChannel = permissionChannel;
+            ReceiverType = receiverType;
+            Receiver = receiver;
+            PermissionTime = DateTime.Now.ToString();
+        }
+
         /// <summary>
         /// Elektronik izin toplama işlemi sonrası izin alınan kişiye bilgilendirme yapılması zorunluluğu bulunmaktadır. 
         /// Etk izinleri için ReceiverType parametresinin değerinin SABIT_TELEFON ve EPOSTA olduğu durumlarda veya sadece KVK izni alındığı durumlarda SMS ile bilgilendirme yapılabilmesi için Gsm numarası gerekmektedir. 

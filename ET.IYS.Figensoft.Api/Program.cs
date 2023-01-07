@@ -14,8 +14,11 @@ builder.Services.AddSwaggerGen();
 var section = builder.Configuration.GetSection("IYSConfig");
 builder.Services.Configure<IYSConfig>(section);
 
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<IIYSConfiguration, IYSConfiguration>();
 builder.Services.AddScoped<IIYSServiceAdapter, IYSServiceApiAdapter>();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

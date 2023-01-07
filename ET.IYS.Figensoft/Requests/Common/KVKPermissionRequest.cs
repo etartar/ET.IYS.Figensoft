@@ -2,6 +2,18 @@
 {
     public class KVKPermissionRequest
     {
+        public KVKPermissionRequest()
+        {
+        }
+
+        public KVKPermissionRequest(string permissionCode, string permissionType, string permissionText)
+        {
+            PermissionCode = permissionCode;
+            PermissionType = permissionType;
+            PermissionText = permissionText;
+            PermissionTime = DateTime.Now.ToString();
+        }
+
         /// <summary>
         /// Bu alan izin alan firmanın kendi tarafında tuttuğu izin metni yada aydınlatma metninin kodu veya versiyon bilgisini ifade eder. 
         /// Onaylatılan izin metinleri değiştirildiğinde PermissionCode alanına yeni bir kod verilmelidir. 

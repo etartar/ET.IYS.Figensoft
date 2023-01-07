@@ -2,6 +2,18 @@
 {
     public class PersonRequest
     {
+        public PersonRequest()
+        {
+        }
+
+        public PersonRequest(string personId, string nameSurname, string informationGsm)
+        {
+            PersonId = personId;
+            NameSurname = nameSurname;
+            KVK = new PersonKVKRequest(informationGsm);
+            ETK = new PersonETKRequest();
+        }
+
         /// <summary>
         /// Kişinin tarafınızda tutulan tekil anahtarıdır. Maksimum 50 karakter gönderilmelidir. 
         /// String yada int değerler olabilir. Bu alan her bir kişi için farklı olmalıdır. 

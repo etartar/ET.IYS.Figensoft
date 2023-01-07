@@ -1,4 +1,5 @@
-﻿using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
+﻿using ET.IYS.Figensoft.Requests.Common;
+using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
 using ET.IYS.Figensoft.Requests.ElektronikIzin.Person;
 
 namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin
@@ -62,9 +63,33 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin
 
         #region Methods
 
+        public PersonAddWithDoubleOptinRequest SetReason(string reason)
+        {
+            Reason = reason;
+            return this;
+        }
+
         public PersonAddWithDoubleOptinRequest SetMustAddMasterAccount(string mustAddMasterAccount)
         {
             MustAddMasterAccount = mustAddMasterAccount;
+            return this;
+        }
+        
+        public PersonAddWithDoubleOptinRequest SetVerificationGsmNo(string verificationGsmNo)
+        {
+            VerificationGsmNo = verificationGsmNo;
+            return this;
+        }
+        
+        public PersonAddWithDoubleOptinRequest SetVerificationCode(string verificationCode)
+        {
+            VerificationCode = verificationCode;
+            return this;
+        }
+
+        public PersonAddWithDoubleOptinRequest SetEvidenceData(object evidenceData)
+        {
+            EvidenceData = evidenceData;
             return this;
         }
 
@@ -77,6 +102,41 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin
         public PersonAddWithDoubleOptinRequest SetLanguage(string language)
         {
             Language = language;
+            return this;
+        }
+
+        public PersonAddWithDoubleOptinRequest CreatePerson(string personId, string nameSurname, string informationGsm)
+        {
+            Person = new PersonRequest(personId, nameSurname, informationGsm);
+            return this;
+        }
+
+        public PersonAddWithDoubleOptinRequest SetKVKPermission(List<KVKPermissionRequest> kvkPermissions)
+        {
+            kvkPermissions.ForEach(kp =>
+            {
+                Person.KVK.AddKVKPermission(kp.PermissionCode, kp.PermissionType, kp.PermissionText);
+            });
+            return this;
+        }
+
+        public PersonAddWithDoubleOptinRequest SetETKPermission(List<PersonETKPermissionRequest> etkPermissions)
+        {
+            etkPermissions.ForEach(ep =>
+            {
+                ep.Contacts.ForEach(c =>
+                {
+                    Person.ETK.CreateContact(c.PermissionChannel, c.ReceiverType, c.Receiver, c.InformationGsm);
+                });
+
+                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText);
+            });
+            return this;
+        }
+
+        public PersonAddWithDoubleOptinRequest SetExtraIzinIzinData(ExtraIzinIzinDataRequest extraIzinIzinDataRequest)
+        {
+            ExtraIzinIzinData = extraIzinIzinDataRequest;
             return this;
         }
 
