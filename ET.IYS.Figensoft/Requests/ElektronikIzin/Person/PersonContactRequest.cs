@@ -8,21 +8,15 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.Person
         {
         }
 
-        public PersonContactRequest(string permissionChannel, string receiverType, string receiver)
+        public PersonContactRequest(string permissionChannel, string receiverType, string receiver) 
+            : base(permissionChannel, receiverType, receiver)
         {
-            PermissionChannel = permissionChannel;
-            ReceiverType = receiverType;
-            Receiver = receiver;
-            PermissionTime = DateTime.Now.ToString();
         }
 
         public PersonContactRequest(string permissionChannel, string receiverType, string receiver, string informationGsm)
+            : base(permissionChannel, receiverType, receiver)
         {
             InformationGsm = informationGsm;
-            PermissionChannel = permissionChannel;
-            ReceiverType = receiverType;
-            Receiver = receiver;
-            PermissionTime = DateTime.Now.ToString();
         }
 
         /// <summary>

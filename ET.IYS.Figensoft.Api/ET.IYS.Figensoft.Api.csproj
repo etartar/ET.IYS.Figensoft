@@ -16,8 +16,4 @@
     <ProjectReference Include="..\ET.IYS.Figensoft\ET.IYS.Figensoft.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\WhiteList\" />
-  </ItemGroup>
-
 </Project>

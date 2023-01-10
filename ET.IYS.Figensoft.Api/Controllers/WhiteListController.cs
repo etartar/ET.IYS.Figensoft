@@ -1,5 +1,14 @@
-﻿using ET.IYS.Figensoft.Abstract;
+﻿using AutoMapper;
+using ET.IYS.Figensoft.Abstract;
+using ET.IYS.Figensoft.Api.Models.WhiteList.PersonAdd;
+using ET.IYS.Figensoft.Api.Models.WhiteList.PersonRemove;
+using ET.IYS.Figensoft.Api.Models.WhiteList.PersonUpdate;
+using ET.IYS.Figensoft.Requests.Common;
+using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
+using ET.IYS.Figensoft.Requests.WhiteList.PersonAdd;
 using ET.IYS.Figensoft.Requests.WhiteList.PersonList;
+using ET.IYS.Figensoft.Requests.WhiteList.PersonRemove;
+using ET.IYS.Figensoft.Requests.WhiteList.PersonUpdate;
 using ET.IYS.Figensoft.Responses.WhiteList.CallList;
 using ET.IYS.Figensoft.Responses.WhiteList.EmailList;
 using ET.IYS.Figensoft.Responses.WhiteList.KvkList;
@@ -19,10 +28,12 @@ namespace ET.IYS.Figensoft.Api.Controllers
     public class WhiteListController : ControllerBase
     {
         private readonly IIYSServiceAdapter _iysService;
+        private readonly IMapper _mapper;
 
-        public WhiteListController(IIYSServiceAdapter iysService)
+        public WhiteListController(IIYSServiceAdapter iysService, IMapper mapper)
         {
             _iysService = iysService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -76,24 +87,70 @@ namespace ET.IYS.Figensoft.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PersonAdd()
+        public async Task<IActionResult> PersonAdd([FromBody] WhiteListPersonAddRequestModel request)
         {
-            WhiteListPersonAddResponse response = await _iysService.WhiteListPersonAdd();
-            return Ok(response);
+            List<KVKPermissionRequest> kvkPermissions = _mapper.Map<List<KVKPermissionRequest>>(request.KVK);
+            List<WhiteListPersonAddETKPermissionRequest> etkPermissions = _mapper.Map<List<WhiteListPersonAddETKPermissionRequest>>(request.ETK);
+            ExtraIzinIzinDataRequest extraIzinIzinData = _mapper.Map<ExtraIzinIzinDataRequest>(request.ExtraIzinIzinData);
+
+            WhiteListPersonAddRequest createWhiteListPersonAddRequest = new WhiteListPersonAddRequest()
+                .SetReason(request.Reason)
+                .SetMustAddMasterAccount(request.MustAddMasterAccount)
+                .SetEvidenceData("buraya figensofttan evidence data formatı öğrenilip custom olarak kendi projenize uyarlayacaksınız.")
+                .SetEvidenceType(request.EvidenceType)
+                .CreatePerson(request.PersonId, request.NameSurname)
+                .SetKVKPermission(kvkPermissions)
+                .SetETKPermission(etkPermissions)
+                .SetExtraIzinIzinData(extraIzinIzinData);
+
+            WhiteListPersonAddResponse response = await _iysService.WhiteListPersonAdd(createWhiteListPersonAddRequest);
+
+            if (response.IsSuccess)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PersonUpdate()
+        public async Task<IActionResult> PersonUpdate([FromBody] PersonUpdateRequestModel request)
         {
-            PersonUpdateResponse response = await _iysService.PersonUpdate();
-            return Ok(response);
+            List<PersonUpdateETKPermissionRequest> etkPermissions = _mapper.Map<List<PersonUpdateETKPermissionRequest>>(request.ETK);
+            
+            PersonUpdateRequest createPersonUpdateRequest = new PersonUpdateRequest()
+                .SetReason(request.Reason)
+                .SetMustAddMasterAccount(request.MustAddMasterAccount)
+                .SetEvidenceData("buraya figensofttan evidence data formatı öğrenilip custom olarak kendi projenize uyarlayacaksınız.")
+                .SetEvidenceType(request.EvidenceType)
+                .CreatePerson(request.PersonId, request.NameSurname)
+                .SetETKPermission(etkPermissions);
+
+            PersonUpdateResponse response = await _iysService.PersonUpdate(createPersonUpdateRequest);
+
+            if (response.IsSuccess)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PersonRemove()
+        public async Task<IActionResult> PersonRemove(PersonRemoveRequestModel request)
         {
-            PersonRemoveResponse response = await _iysService.PersonRemove();
-            return Ok(response);
+            PersonRemoveETKRequest personRemoveETKRequest = _mapper.Map<PersonRemoveETKRequest>(request.ETK);
+
+            PersonRemoveRequest createPersonRemoveRequest = new PersonRemoveRequest()
+                .SetReason(request.Reason)
+                .SetMustRemoveMasterAccount(request.MustRemoveMasterAccount)
+                .SetMustRemoveOtherDealers(request.MustRemoveOtherDealers)
+                .SetPersonId(request.PersonId)
+                .SetRemoveKVKPermission(request.RemoveKVKPermission)
+                .SetETK(personRemoveETKRequest);
+
+            PersonRemoveResponse response = await _iysService.PersonRemove(createPersonRemoveRequest);
+
+            if (response.IsSuccess)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
     }
 }

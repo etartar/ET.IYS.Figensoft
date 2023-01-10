@@ -20,10 +20,5 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.Person
         /// Bu alan gönderilmesi zorunlu bir alandır.
         /// </summary>
         public string InformationGsm { get; set; }
-
-        public void AddKVKPermission(string permissionCode, string permissionType, string permissionText)
-        {
-            Permissions.Add(new KVKPermissionRequest(permissionCode, permissionType, permissionText));
-        }
     }
 }

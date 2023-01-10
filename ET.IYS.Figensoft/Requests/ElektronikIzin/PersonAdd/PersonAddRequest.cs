@@ -1,7 +1,6 @@
 ﻿using ET.IYS.Figensoft.Requests.Common;
 using ET.IYS.Figensoft.Requests.ElektronikIzin.ExtraIzinIzinData;
 using ET.IYS.Figensoft.Requests.ElektronikIzin.Person;
-using ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin;
 
 namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
 {
@@ -28,7 +27,7 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
         /// Ses, metin ya da benzeri kanıt olabilecek dosyalar gönderilecektir. 
         /// Kanıt olarak sadece metin gönderilirse, tarafımızda bu metin txt dosya uzantısı ile kaydedilecektir.
         /// </summary>
-        public object EvidenceData { get; set; }
+        public string EvidenceData { get; set; }
 
         /// <summary>
         /// İstekle gönderilecek kanıt dosyasınını uzantısıdır. Boş gönderilirse kanıt dosyasının uzantısı .txt olacaktır.
@@ -66,7 +65,7 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
             return this;
         }
 
-        public PersonAddRequest SetEvidenceData(object evidenceData)
+        public PersonAddRequest SetEvidenceData(string evidenceData)
         {
             EvidenceData = evidenceData;
             return this;
@@ -103,13 +102,9 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAdd
         {
             etkPermissions.ForEach(ep =>
             {
-                ep.Contacts.ForEach(c =>
-                {
-                    Person.ETK.CreateContact(c.PermissionChannel, c.ReceiverType, c.Receiver, c.InformationGsm);
-                });
-
-                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText);
+                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText, ep.Contacts);
             });
+
             return this;
         }
 

@@ -124,13 +124,9 @@ namespace ET.IYS.Figensoft.Requests.ElektronikIzin.PersonAddWithDoubleOptin
         {
             etkPermissions.ForEach(ep =>
             {
-                ep.Contacts.ForEach(c =>
-                {
-                    Person.ETK.CreateContact(c.PermissionChannel, c.ReceiverType, c.Receiver, c.InformationGsm);
-                });
-
-                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText);
+                Person.ETK.CreatePermission(ep.PermissionCode, ep.PermissionText, ep.Contacts);
             });
+
             return this;
         }
 
